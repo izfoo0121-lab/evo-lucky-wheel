@@ -26,9 +26,7 @@ body{
   padding:40px 28px 34px;
   width:100%;
   max-width:480px;
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.35),
-    inset 0 0 0 1px rgba(255,255,255,.4);
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
   text-align:center;
 }
 
@@ -36,7 +34,6 @@ h1{
   font-size:28px;
   margin-bottom:10px;
   font-weight:800;
-  color:#2d2d2d;
 }
 
 .subtitle{
@@ -44,11 +41,9 @@ h1{
   font-size:13px;
   font-weight:600;
   background:linear-gradient(135deg,#ffe259,#ffa751);
-  color:#5a3b00;
   padding:8px 18px;
   border-radius:999px;
   margin-bottom:26px;
-  box-shadow:0 4px 10px rgba(0,0,0,.12);
 }
 
 input{
@@ -58,13 +53,6 @@ input{
   border-radius:14px;
   border:2px solid #ddd;
   margin-bottom:26px;
-  outline:none;
-  transition:.25s;
-}
-
-input:focus{
-  border-color:#6a11cb;
-  box-shadow:0 0 0 4px rgba(106,17,203,.15);
 }
 
 #wheel-container{
@@ -72,17 +60,6 @@ input:focus{
   width:300px;
   height:300px;
   margin:0 auto 26px;
-}
-
-#wheel{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  border:10px solid #2d2d2d;
-  box-shadow:
-    0 20px 40px rgba(0,0,0,.35),
-    inset 0 0 30px rgba(0,0,0,.15);
-  transition:transform 4s cubic-bezier(.17,.67,.32,1.1);
 }
 
 .pointer{
@@ -94,8 +71,21 @@ input:focus{
   border-left:18px solid transparent;
   border-right:18px solid transparent;
   border-bottom:36px solid #ff3b3b;
-  filter:drop-shadow(0 6px 8px rgba(0,0,0,.4));
   z-index:10;
+}
+
+#wheel-wrapper{
+  width:300px;
+  height:300px;
+  transition:transform 4s cubic-bezier(.17,.67,.32,1.1);
+}
+
+#wheel{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:10px solid #2d2d2d;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
 }
 
 .center{
@@ -111,7 +101,6 @@ input:focus{
   align-items:center;
   justify-content:center;
   font-size:26px;
-  box-shadow:0 8px 18px rgba(0,0,0,.4);
 }
 
 button{
@@ -124,19 +113,10 @@ button{
   background:linear-gradient(135deg,#6a11cb,#2575fc);
   color:#fff;
   cursor:pointer;
-  letter-spacing:.5px;
-  box-shadow:0 10px 25px rgba(106,17,203,.45);
-  transition:.25s;
-}
-
-button:hover:not(:disabled){
-  transform:translateY(-2px);
-  box-shadow:0 14px 30px rgba(106,17,203,.55);
 }
 
 button:disabled{
   background:#aaa;
-  box-shadow:none;
   cursor:not-allowed;
 }
 
@@ -144,7 +124,6 @@ button:disabled{
   font-size:12px;
   color:#777;
   margin-top:20px;
-  line-height:1.5;
 }
 </style>
 </head>
@@ -153,13 +132,17 @@ button:disabled{
 
 <div class="container">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
-  <div class="subtitle">Kedai Baharu · Pasti ≥ 1 Paket TR12 / CM</div>
+  <div class="subtitle">Kedai Baharu · Dijamin ≥ 1 Paket TR12 / CM</div>
 
   <input id="debtorCode" placeholder="Masukkan Kod Debtor" />
 
   <div id="wheel-container">
     <div class="pointer"></div>
-    <canvas id="wheel" width="300" height="300"></canvas>
+
+    <div id="wheel-wrapper">
+      <canvas id="wheel" width="300" height="300"></canvas>
+    </div>
+
     <div class="center">🎁</div>
   </div>
 
@@ -174,12 +157,10 @@ button:disabled{
 <script>
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
+const wheelWrapper = document.getElementById("wheel-wrapper");
 const spinBtn = document.getElementById("spinBtn");
 const debtorInput = document.getElementById("debtorCode");
 
-/* =========================
-   UI 区块（必须包含 CTN）
-========================= */
 const rewards = [
   "TR12 / CM - 1 paket",
   "TR12 / CM - 2 paket",
@@ -187,9 +168,6 @@ const rewards = [
   "🎉 TR12 / CM - 1 CTN (10 paket)"
 ];
 
-/* =========================
-   实际概率（2% CTN）
-========================= */
 const probabilityPool = [
   { prize: rewards[0], weight: 75 },
   { prize: rewards[1], weight: 15 },
@@ -199,21 +177,29 @@ const probabilityPool = [
 
 let currentRotation = 0;
 
-/* 画转盘 */
+/* 画转盘（只画，不转） */
 function drawWheel(){
-  const arc = Math.PI*2/rewards.length;
-  const colors=["#FFD966","#7FDBB6","#74B9FF","#FF7675"];
+  const arc = Math.PI * 2 / rewards.length;
+  const colors = ["#FFD966","#7FDBB6","#74B9FF","#FF7675"];
+
+  ctx.clearRect(0,0,300,300);
 
   rewards.forEach((text,i)=>{
     ctx.beginPath();
-    ctx.fillStyle=colors[i];
+    ctx.fillStyle = colors[i];
     ctx.moveTo(150,150);
-    ctx.arc(150,150,150,arc*i,arc*(i+1));
+    ctx.arc(
+      150,
+      150,
+      150,
+      arc*i - Math.PI/2,
+      arc*(i+1) - Math.PI/2
+    );
     ctx.fill();
 
     ctx.save();
     ctx.translate(150,150);
-    ctx.rotate(arc*i+arc/2);
+    ctx.rotate(arc*i + arc/2 - Math.PI/2);
     ctx.textAlign="right";
     ctx.font="bold 13px Arial";
     ctx.fillStyle="#333";
@@ -222,36 +208,35 @@ function drawWheel(){
   });
 }
 
-/* 加权抽奖 */
 function weightedRandom(){
-  let total=probabilityPool.reduce((s,p)=>s+p.weight,0);
-  let r=Math.random()*total;
+  let total = probabilityPool.reduce((s,p)=>s+p.weight,0);
+  let r = Math.random()*total;
   for(const p of probabilityPool){
     if(r<p.weight) return p.prize;
     r-=p.weight;
   }
 }
 
-spinBtn.onclick=()=>{
-  const debtor=debtorInput.value.trim();
-  if(!debtor){alert("请输入 Debtor Code");return;}
+spinBtn.onclick = ()=>{
+  const debtor = debtorInput.value.trim();
+  if(!debtor){ alert("请输入 Debtor Code"); return; }
 
-  const key="EVO_SPIN_"+debtor;
+  const key = "EVO_SPIN_"+debtor;
   if(localStorage.getItem(key)){
     alert("Debtor 已参与过 🙏");
     return;
   }
 
-  const result=weightedRandom();
-  const index=rewards.indexOf(result);
- const arc = 360 / rewards.length;
-const targetAngle = index * arc + arc / 2;
+  const result = weightedRandom();
+  const index = rewards.indexOf(result);
+  const arc = 360 / rewards.length;
+  const targetAngle = index * arc + arc / 2;
 
-currentRotation += 360 * 5 + 270 - targetAngle;
-canvas.style.transform = `rotate(${currentRotation}deg)`;
+  currentRotation += 360*5 - targetAngle;
+  wheelWrapper.style.transform = `rotate(${currentRotation}deg)`;
 
-  spinBtn.disabled=true;
-  spinBtn.textContent="Memutar...";
+  spinBtn.disabled = true;
+  spinBtn.textContent = "Memutar...";
   localStorage.setItem(key,"played");
 
   setTimeout(()=>{
@@ -259,7 +244,7 @@ canvas.style.transform = `rotate(${currentRotation}deg)`;
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body:JSON.stringify({
-        debtor:debtor,
+        debtor,
         reward:result,
         source:"EVO_WHEEL_TR12_CM"
       })
@@ -276,45 +261,8 @@ canvas.style.transform = `rotate(${currentRotation}deg)`;
   },4200);
 };
 
-function drawWheel(){
-  const arc = Math.PI * 2 / rewards.length;
-  const colors = ["#FFD966","#7FDBB6","#74B9FF","#FF7675"];
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // ⭐ 关键：把画布旋转 -90°（让 0 index 在 12 点）
-  ctx.save();
-  ctx.translate(150,150);
-  ctx.rotate(-Math.PI / 2);
-  ctx.translate(-150,-150);
-
-  rewards.forEach((text,i)=>{
-    ctx.beginPath();
-    ctx.fillStyle = colors[i];
-    ctx.moveTo(150,150);
-    ctx.arc(150,150,150,arc*i,arc*(i+1));
-    ctx.fill();
-
-    ctx.save();
-    ctx.translate(150,150);
-    ctx.rotate(arc*i + arc/2);
-    ctx.textAlign = "right";
-    ctx.font = "bold 13px Arial";
-    ctx.fillStyle = "#333";
-    ctx.fillText(text,140,5);
-    ctx.restore();
-  });
-
-  ctx.restore();
-}
-
+drawWheel();
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
