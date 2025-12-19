@@ -62,9 +62,14 @@ h1{margin-bottom:12px;font-size:24px}
 }
 .segment{
   position:absolute;
-  width:100%;height:100%;
-  clip-path:polygon(50% 50%,100% 15%,100% 85%);
+  width:50%;
+  height:50%;
+  top:50%;
+  left:50%;
+  transform-origin:0% 0%;
+  clip-path:polygon(0 0,100% 50%,0 100%);
 }
+
 .segment span{
   position:absolute;
   right:15px;
@@ -162,7 +167,7 @@ button:disabled{background:#ccc}
 
 <script>
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxlIyJpTqKsKoOjeNAuvZHDD5K49NBWE6OOeHrWDieGZzJbHO-CmSYELZslFXZVwVGh/exec";
+"https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
 
 const prizes=[
  {text:"TR12 / CM 1 Paket",color:"#FFD93D"},
@@ -185,7 +190,8 @@ prizes.forEach((p,i)=>{
   const seg=document.createElement("div");
   seg.className="segment";
   seg.style.background=p.color;
-  seg.style.transform=`rotate(${i*anglePer}deg)`;
+  seg.style.transform =
+  `rotate(${i * anglePer}deg) skewY(${90 - anglePer}deg)`;
   const span=document.createElement("span");
   span.innerText=p.text;
   seg.appendChild(span);
@@ -248,4 +254,5 @@ function closeModal(){
 
 </body>
 </html>
+
 
