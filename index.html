@@ -244,14 +244,11 @@ spinBtn.onclick=()=>{
 
   const result=weightedRandom();
   const index=rewards.indexOf(result);
-  const arc=360/rewards.length;
-
-  const arc = 360 / rewards.length;
+ const arc = 360 / rewards.length;
 const targetAngle = index * arc + arc / 2;
 
 currentRotation += 360 * 5 + 270 - targetAngle;
-
-  canvas.style.transform=`rotate(${currentRotation}deg)`;
+canvas.style.transform = `rotate(${currentRotation}deg)`;
 
   spinBtn.disabled=true;
   spinBtn.textContent="Memutar...";
@@ -280,10 +277,12 @@ currentRotation += 360 * 5 + 270 - targetAngle;
 };
 
 drawWheel();
+ window.addEventListener("resize", drawWheel); 
 </script>
 
 </body>
 </html>
+
 
 
 
