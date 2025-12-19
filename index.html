@@ -37,7 +37,6 @@ h1{margin-bottom:12px;font-size:24px}
   font-weight:600;
 }
 
-/* ===== Wheel ===== */
 .wheel-wrapper{
   position:relative;
   width:300px;
@@ -55,47 +54,15 @@ h1{margin-bottom:12px;font-size:24px}
   border-top:28px solid #ff4757;
   z-index:10;
 }
-.wheel-container{
+
+svg{
   width:100%;
   height:100%;
   border-radius:50%;
-  overflow:hidden;
   border:8px solid #333;
-}
-.wheel{
-  width:100%;
-  height:100%;
-  position:relative;
   transition:transform 4.5s cubic-bezier(0.17,0.67,0.12,0.99);
 }
 
-/* ===== Segment (标准 skew 扇区，不用 clip-path) ===== */
-.segment{
-  position:absolute;
-  width:50%;
-  height:50%;
-  top:50%;
-  left:50%;
-  transform-origin:0% 0%;
-}
-
-/* ===== Text（一定在圆内，不会被裁） ===== */
-.segment-text{
-  position:absolute;
-  left:60%;
-  top:50%;
-  transform-origin:left center;
-  transform:translateY(-50%) rotate(90deg);
-  width:110px;
-  font-size:14px;
-  font-weight:800;
-  color:#fff;
-  text-shadow:1px 1px 3px rgba(0,0,0,.85);
-  white-space:nowrap;
-  z-index:2;
-}
-
-/* Center */
 .center{
   position:absolute;
   width:70px;
@@ -113,35 +80,27 @@ h1{margin-bottom:12px;font-size:24px}
   box-shadow:0 4px 15px rgba(0,0,0,.2);
 }
 
-/* Inputs & buttons */
-input{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:2px solid #eee;
-  margin-bottom:20px;
-  font-size:16px;
-}
-button{
+input,button{
   width:100%;
   padding:16px;
   border-radius:14px;
   border:none;
+  font-size:16px;
+}
+input{
+  border:2px solid #eee;
+  margin-bottom:20px;
+}
+button{
   background:#764ba2;
   color:#fff;
-  font-size:18px;
   font-weight:700;
   cursor:pointer;
 }
 button:disabled{background:#ccc}
 
-.note{
-  margin-top:15px;
-  font-size:12px;
-  color:#666;
-}
+.note{margin-top:15px;font-size:12px;color:#666}
 
-/* Modal */
 .modal{
   display:none;
   position:fixed;
@@ -167,14 +126,15 @@ button:disabled{background:#ccc}
 <div class="card">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
   <div class="badge">Sila Masukkan Kod Debtor</div>
-
   <input id="debtor" placeholder="Contoh: D12345" />
 
   <div class="wheel-wrapper">
     <div class="arrow"></div>
-    <div class="wheel-container">
-      <div id="wheel" class="wheel"></div>
-    </div>
+
+    <svg id="wheel" viewBox="0 0 300 300">
+      <g transform="translate(150,150)"></g>
+    </svg>
+
     <div class="center">🎁</div>
   </div>
 
@@ -191,107 +151,99 @@ button:disabled{background:#ccc}
 </div>
 
 <script>
-/* ===== Google Sheet Web App ===== */
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
 
-/* ===== Prizes ===== */
-const prizes = [
-  { text:"TR12 / CM 1 Paket", color:"#FFD93D" },
-  { text:"TR12 / CM 2 Paket", color:"#6BCB77" },
-  { text:"TR12 / CM 1 Paket", color:"#FF6B6B" },
-  { text:"TR12 / CM 3 Paket", color:"#4D96FF" },
-  { text:"TR12 / CM 1 Paket", color:"#A66CFF" }
+const prizes=[
+  {text:"TR12 / CM 1 Paket",color:"#FFD93D"},
+  {text:"TR12 / CM 2 Paket",color:"#6BCB77"},
+  {text:"TR12 / CM 1 Paket",color:"#FF6B6B"},
+  {text:"TR12 / CM 3 Paket",color:"#4D96FF"},
+  {text:"TR12 / CM 1 Paket",color:"#A66CFF"}
 ];
 
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spinBtn");
-const modal = document.getElementById("modal");
-const prizeText = document.getElementById("prizeText");
-const debtorInput = document.getElementById("debtor");
+const svg=document.querySelector("#wheel g");
+const angle=360/prizes.length;
+const r=140;
 
-const total = prizes.length;
-const anglePer = 360 / total;
-
-/* ===== Build wheel ===== */
 prizes.forEach((p,i)=>{
-  const seg = document.createElement("div");
-  seg.className = "segment";
-  seg.style.background = p.color;
-  seg.style.transform =
-    `rotate(${i * anglePer}deg) skewY(${90 - anglePer}deg)`;
+  const start=i*angle;
+  const end=start+angle;
+  const large=angle>180?1:0;
 
-  const text = document.createElement("div");
-  text.className = "segment-text";
-  text.innerText = p.text;
-  text.style.transform =
-    `translateY(-50%) rotate(90deg) skewY(${-(90 - anglePer)}deg)`;
+  const x1=r*Math.cos(Math.PI*start/180);
+  const y1=r*Math.sin(Math.PI*start/180);
+  const x2=r*Math.cos(Math.PI*end/180);
+  const y2=r*Math.sin(Math.PI*end/180);
 
-  seg.appendChild(text);
-  wheel.appendChild(seg);
+  const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+  path.setAttribute("d",`M0 0 L${x1} ${y1} A${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`);
+  path.setAttribute("fill",p.color);
+  svg.appendChild(path);
+
+  const text=document.createElementNS("http://www.w3.org/2000/svg","text");
+  const mid=start+angle/2;
+  const tx=(r-35)*Math.cos(Math.PI*mid/180);
+  const ty=(r-35)*Math.sin(Math.PI*mid/180);
+  text.setAttribute("x",tx);
+  text.setAttribute("y",ty);
+  text.setAttribute("fill","#fff");
+  text.setAttribute("font-size","14");
+  text.setAttribute("font-weight","800");
+  text.setAttribute("text-anchor","middle");
+  text.setAttribute("dominant-baseline","middle");
+  text.textContent=p.text;
+  svg.appendChild(text);
 });
 
-let spinning = false;
+let spinning=false;
 
 async function spin(){
-  if(spinning) return;
+  if(spinning)return;
+  const debtor=document.getElementById("debtor").value.trim();
+  if(!debtor){alert("Sila masukkan Kod Debtor");return;}
 
-  const debtor = debtorInput.value.trim();
-  if(!debtor){
-    alert("Sila masukkan Kod Debtor");
-    return;
-  }
+  spinning=true;
+  document.getElementById("spinBtn").disabled=true;
 
-  spinBtn.disabled = true;
-  spinning = true;
-
-  /* Check duplicate debtor */
-  const check = await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
+  const check=await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
     .then(r=>r.json()).catch(()=>({exists:false}));
-
   if(check.exists){
     alert("Debtor ini sudah pernah bermain");
-    reset();
-    return;
+    reset();return;
   }
 
-  /* Pick winner */
-  const index = Math.floor(Math.random() * total);
-  const targetAngle = index * anglePer + anglePer / 2;
-  const finalRotation = 360 * 6 - targetAngle - 90;
+  const index=Math.floor(Math.random()*prizes.length);
+  const target=index*angle+angle/2;
+  const rotation=360*6-target-90;
 
-  wheel.style.transform = `rotate(${finalRotation}deg)`;
+  document.getElementById("wheel").style.transform=`rotate(${rotation}deg)`;
 
   setTimeout(async()=>{
-    const prize = prizes[index].text;
-    prizeText.innerText = prize;
-    modal.classList.add("show");
+    document.getElementById("prizeText").innerText=prizes[index].text;
+    document.getElementById("modal").classList.add("show");
 
-    /* Save to Google Sheet */
     await fetch(SCRIPT_URL,{
       method:"POST",
       body:JSON.stringify({
-        debtor: debtor,
-        prize: prize,
-        page: location.href
+        debtor,
+        prize:prizes[index].text,
+        page:location.href
       })
     });
-
     reset();
   },4800);
 }
 
 function reset(){
-  spinning = false;
-  spinBtn.disabled = false;
+  spinning=false;
+  document.getElementById("spinBtn").disabled=false;
 }
-
 function closeModal(){
-  modal.classList.remove("show");
-  debtorInput.value="";
+  document.getElementById("modal").classList.remove("show");
+  document.getElementById("debtor").value="";
 }
-
-spinBtn.addEventListener("click", spin);
+document.getElementById("spinBtn").onclick=spin;
 </script>
 </body>
 </html>
