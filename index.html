@@ -6,14 +6,10 @@
 <title>EVO Roda Bertuah</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   display: flex;
@@ -23,56 +19,44 @@ body {
 }
 
 .container {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255,255,255,0.95);
   border-radius: 20px;
   padding: 40px 30px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   max-width: 500px;
   width: 100%;
-  backdrop-filter: blur(10px);
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 30px;
   color: #333;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 8px;
 }
 
 .subtitle {
-  color: #666;
   font-size: 14px;
-  margin-bottom: 30px;
-  padding: 8px 16px;
+  color: #555;
+  margin-bottom: 25px;
   background: #ffeaa7;
-  border-radius: 20px;
   display: inline-block;
-}
-
-.input-group {
-  margin-bottom: 30px;
+  padding: 6px 14px;
+  border-radius: 20px;
 }
 
 input {
-  padding: 16px 20px;
-  font-size: 16px;
   width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
   border: 2px solid #ddd;
-  border-radius: 12px;
-  transition: all 0.3s;
-  outline: none;
-}
-
-input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  margin-bottom: 25px;
 }
 
 #wheel-container {
   position: relative;
   width: 320px;
   height: 320px;
-  margin: 0 auto 30px;
+  margin: 0 auto 25px;
 }
 
 #wheel {
@@ -80,8 +64,7 @@ input:focus {
   height: 100%;
   border-radius: 50%;
   border: 10px solid #333;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(0,0,0,0.1);
-  transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 4s cubic-bezier(0.25,0.1,0.25,1);
 }
 
 .pointer {
@@ -93,20 +76,8 @@ input:focus {
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-bottom: 35px solid #ff3838;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  border-bottom: 35px solid red;
   z-index: 10;
-}
-
-.pointer::after {
-  content: '';
-  position: absolute;
-  top: 35px;
-  left: -8px;
-  width: 16px;
-  height: 16px;
-  background: #ff3838;
-  border-radius: 50%;
 }
 
 .center-circle {
@@ -116,11 +87,9 @@ input:focus {
   transform: translate(-50%, -50%);
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 50%;
+  background: linear-gradient(135deg,#667eea,#764ba2);
   border: 4px solid white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,71 +97,26 @@ input:focus {
 }
 
 button {
-  padding: 18px 40px;
-  font-size: 20px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
   width: 100%;
-  transition: all 0.3s;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(102, 126, 234, 0.5);
-}
-
-button:active:not(:disabled) {
-  transform: translateY(0);
+  padding: 18px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 40px;
+  border: none;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: #fff;
+  cursor: pointer;
 }
 
 button:disabled {
-  background: #ccc;
+  background: #aaa;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 .footer {
   font-size: 12px;
-  color: #999;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.spin-animation {
-  animation: pulse 0.5s ease-in-out;
-}
-
-/* 响应式设计 */
-@media (max-width: 480px) {
-  .container {
-    padding: 30px 20px;
-  }
-  
-  h1 {
-    font-size: 26px;
-  }
-  
-  #wheel-container {
-    width: 280px;
-    height: 280px;
-  }
-  
-  button {
-    font-size: 18px;
-  }
+  color: #777;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -201,11 +125,11 @@ button:disabled {
 
 <div class="container">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
-  <div class="subtitle">Kedai Baharu Sahaja · 1 Kali Setiap Debtor</div>
-
-  <div class="input-group">
-    <input type="text" id="debtorCode" placeholder="Sila masukkan Kod Debtor" />
+  <div class="subtitle">
+    Kedai Baharu · Pasti Dapat ≥ 1 Paket TR12 / CM
   </div>
+
+  <input type="text" id="debtorCode" placeholder="Masukkan Kod Debtor" />
 
   <div id="wheel-container">
     <div class="pointer"></div>
@@ -216,8 +140,8 @@ button:disabled {
   <button id="spinBtn">Putar Sekarang</button>
 
   <div class="footer">
-    Aktiviti ini terhad untuk kedai baharu sahaja · Hadiah mengikut rekod sistem<br>
-    Semua hadiah akan diberikan semasa pesanan seterusnya
+    • Setiap Debtor hanya 1 kali<br>
+    • Semua hadiah diberi bersama pesanan seterusnya
   </div>
 </div>
 
@@ -228,127 +152,106 @@ const spinBtn = document.getElementById("spinBtn");
 const debtorInput = document.getElementById("debtorCode");
 
 /* =========================
-   🎁 REWARD CONFIG 区
-   👉 你之后只需要改这里
+   🎁 UI 显示用（均匀）
 ========================= */
 const rewards = [
-  "🎁 Percuma Touro 12 - 1 karton",
-  "🎁 Percuma Luffman Evo - 2 paket",
-  "🎁 Percuma Sukun (Merah/Putih) - 2 paket",
-  "🎁 Percuma Luffman Evo - 1 karton",
-  "🎁 Percuma Luffman Nano Watermelon - 1 paket"
+  "TR12 / CM - 1 paket",
+  "TR12 / CM - 2 paket",
+  "TR12 / CM - 1 paket",
+  "TR12 / CM - 3 paket",
+  "TR12 / CM - 1 paket"
 ];
 
-/* 概率控制 */
+/* =========================
+   🎯 实际概率（已确认）
+========================= */
 const probabilityPool = [
-  { prize: rewards[0], weight: 1 },   // Touro 12 - 1%
-  { prize: rewards[1], weight: 20 },  // Luffman Evo 2 paket - 20%
-  { prize: rewards[2], weight: 20 },  // Sukun 2 paket - 20%
-  { prize: rewards[3], weight: 20 },  // Luffman Evo 1 carton - 20%
-  { prize: rewards[4], weight: 39 }   // Nano Watermelon - 39%
+  { prize: "TR12 / CM - 1 paket", weight: 75 },
+  { prize: "TR12 / CM - 2 paket", weight: 15 },
+  { prize: "TR12 / CM - 3 paket", weight: 8 },
+  { prize: "TR12 / CM - 1 CTN (10 paket)", weight: 2 }
 ];
 
 let currentRotation = 0;
 
+/* 绘制转盘 */
 function drawWheel() {
   const arc = Math.PI * 2 / rewards.length;
-  const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#C7CEEA'];
-  
-  rewards.forEach((text, i) => {
+  const colors = ["#FFE08A","#FFF3C4","#FFD966","#FFF3C4","#FFE08A"];
+
+  rewards.forEach((text,i)=>{
     ctx.beginPath();
     ctx.fillStyle = colors[i];
-    ctx.moveTo(160, 160);
-    ctx.arc(160, 160, 160, arc * i, arc * (i + 1));
+    ctx.moveTo(160,160);
+    ctx.arc(160,160,160,arc*i,arc*(i+1));
     ctx.fill();
-    
-    // 添加边框线
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 3;
-    ctx.stroke();
 
     ctx.save();
-    ctx.translate(160, 160);
-    ctx.rotate(arc * i + arc / 2);
-    ctx.textAlign = "right";
-    ctx.font = "bold 13px Arial";
-    ctx.fillStyle = "#333";
-    
-    // 文字阴影效果
-    ctx.shadowColor = 'rgba(255,255,255,0.5)';
-    ctx.shadowBlur = 3;
-    ctx.shadowOffsetX = 1;
-    ctx.shadowOffsetY = 1;
-    
-    // 分行显示文字
-    const lines = text.split(' - ');
-    ctx.fillText(lines[0], 150, -8);
-    if (lines[1]) {
-      ctx.font = "11px Arial";
-      ctx.fillText(lines[1], 150, 8);
-    }
-    
+    ctx.translate(160,160);
+    ctx.rotate(arc*i + arc/2);
+    ctx.textAlign="right";
+    ctx.font="bold 13px Arial";
+    ctx.fillStyle="#333";
+    ctx.fillText(text,150,5);
     ctx.restore();
   });
 }
 
 function weightedRandom() {
-  let total = probabilityPool.reduce((s, p) => s + p.weight, 0);
-  let rand = Math.random() * total;
-  for (let p of probabilityPool) {
-    if (rand < p.weight) return p.prize;
-    rand -= p.weight;
+  let total = probabilityPool.reduce((s,p)=>s+p.weight,0);
+  let r = Math.random()*total;
+  for (let p of probabilityPool){
+    if (r < p.weight) return p.prize;
+    r -= p.weight;
   }
 }
 
 spinBtn.onclick = () => {
   const debtor = debtorInput.value.trim();
   if (!debtor) {
-    alert("⚠️ Sila masukkan Kod Debtor terlebih dahulu");
-    debtorInput.focus();
+    alert("Sila masukkan Kod Debtor");
     return;
   }
 
   const key = "EVO_SPIN_" + debtor;
   if (localStorage.getItem(key)) {
-    alert("❌ Debtor ini sudah menyertai aktiviti\nSetiap Debtor hanya boleh menyertai 1 kali sahaja 🙏");
+    alert("Debtor ini sudah menyertai sebelum ini 🙏");
     return;
   }
 
   const result = weightedRandom();
-  const index = rewards.indexOf(result);
+  const index = rewards.indexOf(
+    result.includes("CTN") ? "TR12 / CM - 1 paket" : result
+  );
+
   const arc = 360 / rewards.length;
-
-  const rotation = 360 * 5 + (360 - (index * arc + arc / 2));
-
-  currentRotation += rotation;
+  currentRotation += 360*5 + (360 - (index*arc + arc/2));
   canvas.style.transform = `rotate(${currentRotation}deg)`;
 
   spinBtn.disabled = true;
   spinBtn.textContent = "Memutar...";
-  localStorage.setItem(key, "played");
 
-  setTimeout(() => {
-    // 记录到 Google Sheet
-    fetch("https://script.google.com/macros/s/AKfycbyOEKmkjczMpTcBGUXBoVMrv5IuhAuNro4upiT85ueONZ6P2FXcp9zOJCeYCrOAcZi4/exec", {
-      method: "POST",
-      body: JSON.stringify({
-        debtor: debtor,
-        reward: result,
-        timestamp: new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Kuala_Lumpur' })
+  localStorage.setItem(key,"played");
+
+  setTimeout(()=>{
+    fetch("https://script.google.com/macros/s/AKfycbyOEKmkjczMpTcBGUXBoVMrv5IuhAuNro4upiT85ueONZ6P2FXcp9zOJCeYCrOAcZi4/exec",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        debtor:debtor,
+        reward:result,
+        source:"EVO_WHEEL_TR12_CM"
       })
-    }).catch(err => console.error('记录失败:', err));
+    });
 
-    // 显示中奖结果
     alert(
-      "🎉🎉🎉 Tahniah! Anda Menang! 🎉🎉🎉\n\n" +
-      "Kod Debtor: " + debtor + "\n\n" +
-      "🎁 Hadiah Anda:\n" + result.replace('🎁 ', '') + "\n\n" +
-      "Hadiah akan diberikan bersama pesanan seterusnya!\n" +
-      "Terima kasih atas penyertaan anda 💝"
+      "🎉 Tahniah!\n\nKod Debtor: "+debtor+
+      "\n\nHadiah Anda:\n"+result+
+      "\n\nHadiah akan diberi bersama pesanan seterusnya."
     );
-    
+
     spinBtn.textContent = "Sudah Menyertai";
-  }, 4200);
+  },4200);
 };
 
 drawWheel();
