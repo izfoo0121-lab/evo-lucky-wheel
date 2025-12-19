@@ -276,12 +276,43 @@ canvas.style.transform = `rotate(${currentRotation}deg)`;
   },4200);
 };
 
-drawWheel();
- window.addEventListener("resize", drawWheel); 
+function drawWheel(){
+  const arc = Math.PI * 2 / rewards.length;
+  const colors = ["#FFD966","#7FDBB6","#74B9FF","#FF7675"];
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // ⭐ 关键：把画布旋转 -90°（让 0 index 在 12 点）
+  ctx.save();
+  ctx.translate(150,150);
+  ctx.rotate(-Math.PI / 2);
+  ctx.translate(-150,-150);
+
+  rewards.forEach((text,i)=>{
+    ctx.beginPath();
+    ctx.fillStyle = colors[i];
+    ctx.moveTo(150,150);
+    ctx.arc(150,150,150,arc*i,arc*(i+1));
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(150,150);
+    ctx.rotate(arc*i + arc/2);
+    ctx.textAlign = "right";
+    ctx.font = "bold 13px Arial";
+    ctx.fillStyle = "#333";
+    ctx.fillText(text,140,5);
+    ctx.restore();
+  });
+
+  ctx.restore();
+}
+
 </script>
 
 </body>
 </html>
+
 
 
 
