@@ -4,165 +4,147 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>EVO Roda Bertuah</title>
+
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:'Segoe UI',Tahoma,sans-serif;
-    background:linear-gradient(135deg,#667eea,#764ba2);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-  }
-  .card{
-    background:#fff;
-    max-width:420px;
-    width:100%;
-    border-radius:28px;
-    padding:32px 28px;
-    text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,.3);
-  }
-  h1{margin-bottom:12px;font-size:24px}
-  .badge{
-    background:linear-gradient(135deg,#ffd89b,#19547b);
-    color:#fff;
-    padding:8px 18px;
-    border-radius:25px;
-    display:inline-block;
-    margin-bottom:24px;
-    font-size:13px;
-    font-weight:600;
-  }
-  .wheel-wrapper{
-    position:relative;
-    width:300px;
-    height:300px;
-    margin:0 auto 28px;
-  }
-  .arrow{
-    position:absolute;
-    top:-10px;
-    left:50%;
-    transform:translateX(-50%);
-    width:0;height:0;
-    border-left:20px solid transparent;
-    border-right:20px solid transparent;
-    border-top:30px solid #ff4757;
-    z-index:10;
-  }
-  .wheel-container{
-    width:100%;height:100%;
-    border-radius:50%;
-    overflow:hidden;
-    position:relative;
-  }
-  .wheel{
-    width:100%;height:100%;
-    position:relative;
-    transition:transform 4.5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-    transform:rotate(0deg);
-  }
-  .segment{
-    position:absolute;
-    width:50%;
-    height:50%;
-    top:50%;
-    left:50%;
-    transform-origin:0% 0%;
-    clip-path:polygon(0 0, 100% 0, 0 100%);
-  }
-  .segment-text{
-    position:absolute;
-    width:100px;
-    left:50%;
-    top:30%;
-    transform:translateX(-50%) rotate(36deg);
-    transform-origin:center;
-    color:#fff;
-    font-weight:800;
-    font-size:13px;
-    text-shadow:1px 1px 3px rgba(0,0,0,0.8);
-    text-align:center;
-    white-space:nowrap;
-  }
-  .center{
-    position:absolute;
-    width:70px;height:70px;
-    background:#fff;
-    border-radius:50%;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    font-size:32px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:5;
-    box-shadow:0 4px 15px rgba(0,0,0,0.2);
-  }
-  input{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    border:2px solid #eee;
-    margin-bottom:20px;
-    font-size:16px;
-  }
-  button{
-    width:100%;
-    padding:16px;
-    border-radius:14px;
-    border:none;
-    background:#764ba2;
-    color:#fff;
-    font-size:18px;
-    font-weight:700;
-    cursor:pointer;
-    transition:background 0.3s;
-  }
-  button:disabled{background:#ccc;cursor:not-allowed}
-  .note{
-    margin-top:15px;
-    font-size:12px;
-    color:#666;
-  }
-  .modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.7);
-    z-index:100;
-    justify-content:center;
-    align-items:center;
-  }
-  .modal.show{display:flex}
-  .modal-content{
-    background:#fff;
-    padding:30px;
-    border-radius:20px;
-    width:90%;
-    max-width:320px;
-    text-align:center;
-  }
-  .modal-content button{
-    margin-top:20px;
-    background:#764ba2;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.card{
+  background:#fff;
+  max-width:420px;
+  width:100%;
+  border-radius:28px;
+  padding:32px 28px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+h1{margin-bottom:12px;font-size:24px}
+.badge{
+  background:linear-gradient(135deg,#ffd89b,#19547b);
+  color:#fff;
+  padding:8px 18px;
+  border-radius:25px;
+  display:inline-block;
+  margin-bottom:24px;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* ===== Wheel ===== */
+.wheel-wrapper{
+  position:relative;
+  width:300px;
+  height:300px;
+  margin:0 auto 28px;
+}
+.arrow{
+  position:absolute;
+  top:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-top:28px solid #ff4757;
+  z-index:10;
+}
+svg{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:8px solid #333;
+  transition:transform 4.5s cubic-bezier(0.17,0.67,0.12,0.99);
+}
+
+/* Center button */
+.center{
+  position:absolute;
+  width:70px;
+  height:70px;
+  background:#fff;
+  border-radius:50%;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:5;
+  box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+/* Inputs */
+input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:2px solid #eee;
+  margin-bottom:20px;
+  font-size:16px;
+}
+button{
+  width:100%;
+  padding:16px;
+  border-radius:14px;
+  border:none;
+  background:#764ba2;
+  color:#fff;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+}
+button:disabled{background:#ccc}
+
+.note{margin-top:15px;font-size:12px;color:#666}
+
+/* Modal */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:100;
+  justify-content:center;
+  align-items:center;
+}
+.modal.show{display:flex}
+.modal-content{
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
+  width:90%;
+  max-width:320px;
+  text-align:center;
+}
 </style>
 </head>
+
 <body>
+
 <div class="card">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
   <div class="badge">Sila Masukkan Kod Debtor</div>
+
   <input id="debtor" placeholder="Contoh: D12345" />
+
   <div class="wheel-wrapper">
     <div class="arrow"></div>
-    <div class="wheel-container">
-      <div id="wheel" class="wheel"></div>
-    </div>
+
+    <svg id="wheel" viewBox="0 0 300 300">
+      <g transform="translate(150,150)"></g>
+    </svg>
+
     <div class="center">🎁</div>
   </div>
+
   <button id="spinBtn">Putar Sekarang</button>
   <div class="note">*Setiap Debtor hanya 1 kali peluang</div>
 </div>
@@ -176,114 +158,136 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
+/* ===== Google Sheet Web App ===== */
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
 
+/* ===== Prize config (WITH WEIGHT) ===== */
 const prizes = [
-  {text:"TR12 / CM 1 Paket", color:"#FFD93D"},
-  {text:"TR12 / CM 2 Paket", color:"#6BCB77"},
-  {text:"TR12 / CM 1 Paket", color:"#FF6B6B"},
-  {text:"TR12 / CM 3 Paket", color:"#4D96FF"},
-  {text:"TR12 / CM 1 Paket", color:"#A66CFF"}
+  { text:"TR12 / CM 1 Paket", color:"#FFD93D", weight:60 },
+  { text:"TR12 / CM 2 Paket", color:"#6BCB77", weight:25 },
+  { text:"TR12 / CM 1 Paket", color:"#FF6B6B", weight:60 },
+  { text:"TR12 / CM 3 Paket", color:"#4D96FF", weight:15 },
+  { text:"TR12 / CM 1 Paket", color:"#A66CFF", weight:60 }
 ];
 
+const svgGroup = document.querySelector("#wheel g");
 const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spinBtn");
-const modal = document.getElementById("modal");
 const prizeText = document.getElementById("prizeText");
+const modal = document.getElementById("modal");
 const debtorInput = document.getElementById("debtor");
 
-const total = prizes.length;
-const anglePer = 360 / total;  // 72deg untuk 5 segmen
+const angle = 360 / prizes.length;
+const radius = 140;
 
-// Build wheel
+/* ===== Build SVG wheel ===== */
 prizes.forEach((p, i) => {
-  const seg = document.createElement("div");
-  seg.className = "segment";
-  seg.style.background = p.color;
-  seg.style.transform = `rotate(${i * anglePer}deg) skewY(${90 - anglePer}deg)`;
+  const start = i * angle;
+  const end = start + angle;
+  const largeArc = angle > 180 ? 1 : 0;
 
-  const text = document.createElement("div");
-  text.className = "segment-text";
-  text.innerText = p.text;
-  text.style.transform = `translateX(-50%) rotate(${anglePer / 2}deg)`;  // rotate separuh sudut supaya teks di tengah segmen
-  seg.appendChild(text);
+  const x1 = radius * Math.cos(Math.PI * start / 180);
+  const y1 = radius * Math.sin(Math.PI * start / 180);
+  const x2 = radius * Math.cos(Math.PI * end / 180);
+  const y2 = radius * Math.sin(Math.PI * end / 180);
 
-  wheel.appendChild(seg);
+  const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+  path.setAttribute(
+    "d",
+    `M0 0 L${x1} ${y1} A${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`
+  );
+  path.setAttribute("fill", p.color);
+  svgGroup.appendChild(path);
+
+  const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+  const mid = start + angle / 2;
+  const tx = (radius - 40) * Math.cos(Math.PI * mid / 180);
+  const ty = (radius - 40) * Math.sin(Math.PI * mid / 180);
+
+  text.setAttribute("x", tx);
+  text.setAttribute("y", ty);
+  text.setAttribute("fill", "#fff");
+  text.setAttribute("font-size", "14");
+  text.setAttribute("font-weight", "800");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("dominant-baseline", "middle");
+  text.textContent = p.text;
+
+  svgGroup.appendChild(text);
 });
+
+/* ===== Weighted random ===== */
+function weightedRandomIndex(items){
+  const totalWeight = items.reduce((s,i)=>s+i.weight,0);
+  let r = Math.random() * totalWeight;
+  for(let i=0;i<items.length;i++){
+    r -= items[i].weight;
+    if(r <= 0) return i;
+  }
+  return 0;
+}
 
 let spinning = false;
 
-async function spin() {
-  if (spinning) return;
-  
+async function spin(){
+  if(spinning) return;
+
   const debtor = debtorInput.value.trim();
-  if (!debtor) {
+  if(!debtor){
     alert("Sila masukkan Kod Debtor");
     return;
   }
 
-  spinBtn.disabled = true;
-  spinBtn.textContent = "Sedang Berputar...";
   spinning = true;
+  spinBtn.disabled = true;
 
-  // Check jika debtor sudah pernah main
-  try {
-    const check = await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
-      .then(r => r.json());
-    if (check.exists) {
-      alert("Debtor ini sudah pernah bermain");
-      resetButton();
-      return;
-    }
-  } catch (e) {
-    alert("Gagal semak data. Cuba lagi.");
-    resetButton();
+  /* Check duplicate debtor */
+  const check = await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
+    .then(r=>r.json())
+    .catch(()=>({exists:false}));
+
+  if(check.exists){
+    alert("Debtor ini sudah pernah bermain");
+    reset();
     return;
   }
 
-  // Random pemenang
-  const winnerIndex = Math.floor(Math.random() * total);
-  const extraSpins = 5 + Math.random() * 2;  // 5-7 putaran penuh untuk lebih exciting
-  const targetRotation = winnerIndex * anglePer + anglePer / 2;  // ke tengah segmen
-  const finalRotation = extraSpins * 360 + 360 - targetRotation;  // arrow di atas, jadi adjust
+  /* Pick winner by WEIGHT */
+  const index = weightedRandomIndex(prizes);
+
+  const targetAngle = index * angle + angle / 2;
+  const finalRotation = 360 * 6 - targetAngle - 90;
 
   wheel.style.transform = `rotate(${finalRotation}deg)`;
 
-  setTimeout(async () => {
-    const prize = prizes[winnerIndex].text;
-    prizeText.innerText = prize;
+  setTimeout(async()=>{
+    prizeText.innerText = prizes[index].text;
     modal.classList.add("show");
 
-    // Simpan ke Google Sheet
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({
-          debtor: debtor,
-          prize: prize,
-          page: location.href
-        })
-      });
-    } catch (e) {
-      console.error("Gagal simpan data");
-    }
+    await fetch(SCRIPT_URL,{
+      method:"POST",
+      body:JSON.stringify({
+        debtor,
+        prize: prizes[index].text,
+        page: location.href
+      })
+    });
 
-    resetButton();
-  }, 4800);  // sedikit lebih panjang daripada transition 4.5s
+    reset();
+  },4800);
 }
 
-function resetButton() {
+function reset(){
   spinning = false;
   spinBtn.disabled = false;
-  spinBtn.textContent = "Putar Sekarang";
 }
 
-function closeModal() {
+function closeModal(){
   modal.classList.remove("show");
   debtorInput.value = "";
 }
 
-// Click button trigger spin
 spinBtn.addEventListener("click", spin);
 </script>
 </body>
