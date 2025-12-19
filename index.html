@@ -215,7 +215,7 @@ spinBtn.onclick=()=>{
   const index=rewards.indexOf(result);
   const arc=360/rewards.length;
 
-  currentRotation+=360*5+(360-(index*arc+arc/2));
+  currentRotation+=360*5+(360-(index*arc+arc/2))+90;
   canvas.style.transform=`rotate(${currentRotation}deg)`;
 
   spinBtn.disabled=true;
@@ -249,3 +249,4 @@ drawWheel();
 
 </body>
 </html>
+
