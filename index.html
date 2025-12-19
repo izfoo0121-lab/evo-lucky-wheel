@@ -6,62 +6,69 @@
 <title>EVO Roda Bertuah</title>
 
 <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #6a6ee6, #7f5ac8);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
   }
 
   .card {
-    background: #f9f9fc;
-    width: 360px;
-    border-radius: 24px;
-    padding: 24px;
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 28px;
+    padding: 32px 28px;
     text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease;
   }
 
   h1 {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 700;
   }
 
   .badge {
-    background: #ffe7a3;
+    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+    color: #fff;
     display: inline-block;
-    padding: 6px 14px;
-    border-radius: 20px;
-    margin-bottom: 16px;
-    font-size: 14px;
+    padding: 8px 18px;
+    border-radius: 25px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    font-weight: 600;
   }
 
-  input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    margin-bottom: 16px;
-    font-size: 16px;
-  }
-
+  /* 轮盘容器 */
   .wheel-wrapper {
     position: relative;
-    width: 260px;
-    height: 260px;
-    margin: 0 auto 20px;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 28px;
   }
 
   .arrow {
     position: absolute;
-    top: -12px;
+    top: -10px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 20px solid red;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 25px solid #ff4757;
     z-index: 10;
   }
 
@@ -70,62 +77,96 @@
     height: 100%;
     border-radius: 50%;
     border: 8px solid #333;
-    transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
     position: relative;
     overflow: hidden;
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    background: #333;
   }
 
+  /* 扇区样式优化 */
   .segment {
     position: absolute;
-    width: 50%;
-    height: 50%;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0% 0%;
-    background: #ffe082;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%;
+    clip-path: polygon(50% 50%, 100% 15%, 100% 85%); /* 修正扇区形状 */
   }
 
+  /* 字体样式优化 */
   .segment span {
     position: absolute;
-    left: 110px;
-    top: 12px;
-    transform: rotate(90deg);
-    font-size: 14px;
-    white-space: nowrap;
+    right: 15px; /* 靠近外圈 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 120px;
+    text-align: right;
+    color: #fff;
+    font-size: 14px; /* 加大字号 */
+    font-weight: 800;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 增加阴影，防止看不见白字 */
+    padding-right: 10px;
+    line-height: 1.2;
   }
 
   .center {
     position: absolute;
-    width: 56px;
-    height: 56px;
-    background: #7f5ac8;
+    width: 60px;
+    height: 60px;
+    background: #fff;
     border-radius: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 28px;
     z-index: 5;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  /* 输入框和按钮 */
+  input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    margin-bottom: 20px;
+    font-size: 16px;
   }
 
   button {
     width: 100%;
-    padding: 14px;
-    border-radius: 30px;
+    padding: 16px;
+    border-radius: 14px;
     border: none;
-    background: linear-gradient(135deg, #6a6ee6, #7f5ac8);
+    background: #764ba2;
     color: #fff;
     font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
   }
 
-  .note {
-    font-size: 12px;
-    color: #666;
-    margin-top: 12px;
+  button:disabled { background: #ccc; }
+
+  /* 弹窗样式 */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.show { display: flex; }
+  .modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
   }
 </style>
 </head>
@@ -133,90 +174,112 @@
 <body>
 <div class="card">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
-  <div class="badge">Kedai Baharu · Pasti Dapat ≥ 1 Paket TR12 / CM</div>
+  <div class="badge">Sila Masukkan Kod Debtor</div>
 
-  <input id="debtor" placeholder="Masukkan Kod Debtor" />
+  <input id="debtor" placeholder="Contoh: D12345" maxlength="20" />
 
   <div class="wheel-wrapper">
     <div class="arrow"></div>
-
     <div id="wheel" class="wheel"></div>
-
     <div class="center">🎁</div>
   </div>
 
-  <button onclick="spin()">Putar Sekarang</button>
+  <button id="spinBtn" onclick="spin()">Putar Sekarang</button>
 
-  <div class="note">
-    • Setiap Debtor hanya 1 kali<br>
-    • Hadiah diberi bersama pesanan seterusnya
+  <div class="note" style="margin-top: 15px; font-size: 12px; color: #666;">
+    *Setiap Debtor hanya 1 kali peluang
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h2 id="modalTitle">Tahniah!</h2>
+    <p id="prizeText" style="margin: 20px 0; font-size: 18px; color: #764ba2; font-weight: bold;"></p>
+    <button onclick="closeModal()" style="padding: 10px;">OK</button>
   </div>
 </div>
 
 <script>
   const prizes = [
-    "TR12 / CM - 1 Paket",
-    "TR12 / CM - 2 Paket",
-    "TR12 / CM - 1 Paket",
-    "TR12 / CM - 3 Paket",
-    "TR12 / CM - 1 Paket"
+    { text: "TR12 / CM\n1 Paket", color: "#FFD93D" },
+    { text: "TR12 / CM\n2 Paket", color: "#6BCB77" },
+    { text: "TR12 / CM\n1 Paket", color: "#FF6B6B" },
+    { text: "TR12 / CM\n3 Paket", color: "#4D96FF" },
+    { text: "TR12 / CM\n1 Paket", color: "#A66CFF" }
   ];
 
   const wheel = document.getElementById("wheel");
-  const total = prizes.length;
-  const anglePer = 360 / total;
+  const spinBtn = document.getElementById("spinBtn");
+  const modal = document.getElementById("modal");
+  const prizeText = document.getElementById("prizeText");
+  
+  const totalPrizes = prizes.length;
+  const anglePer = 360 / totalPrizes;
 
-  // build segments
-  prizes.forEach((text, i) => {
+  // 初始化轮盘扇区
+  prizes.forEach((prize, i) => {
     const seg = document.createElement("div");
     seg.className = "segment";
-    seg.style.transform = `rotate(${i * anglePer}deg) skewY(${90 - anglePer}deg)`;
-    seg.style.background = i % 2 === 0 ? "#ffe082" : "#fff3c4";
+    // 旋转每个扇区
+    seg.style.transform = `rotate(${i * anglePer}deg)`;
+    seg.style.background = prize.color;
 
     const span = document.createElement("span");
-    span.innerText = text;
-
+    span.innerText = prize.text;
+    
     seg.appendChild(span);
     wheel.appendChild(seg);
   });
 
   let spinning = false;
+  window.usedDebtors = {};
 
   function spin() {
     if (spinning) return;
 
     const debtor = document.getElementById("debtor").value.trim();
     if (!debtor) {
-      alert("请输入 Debtor Code");
+      alert("Sila masukkan Kod Debtor");
       return;
     }
 
-    if (localStorage.getItem("evo_" + debtor)) {
-      alert("Debtor 已经参与过");
+    if (window.usedDebtors[debtor]) {
+      alert("Debtor ini sudah mengambil bahagian!");
       return;
     }
 
     spinning = true;
-
-    const index = Math.floor(Math.random() * total);
-
-    // 🎯 指向扇区中心 + 修正 12 点箭头（-90°）
-    const targetAngle =
-      index * anglePer +
-      anglePer / 2;
-
-    const rotation =
-      360 * 5 - targetAngle - 90;
-
-    wheel.style.transform = `rotate(${rotation}deg)`;
+    spinBtn.disabled = true;
+    
+    // 随机一个结果 (0 到 totalPrizes-1)
+    const stopIndex = Math.floor(Math.random() * totalPrizes);
+    
+    // 旋转逻辑：圈数 + 偏移量
+    // 因为 CSS rotate(0) 指向的是 3 点钟方向，我们需要计算让目标停在顶部 12 点钟（即旋转 -90度 偏移）
+    const extraDegree = 360 * 5; // 转5圈
+    const targetDegree = extraDegree + (360 - (stopIndex * anglePer));
+    
+    wheel.style.transform = `rotate(${targetDegree}deg)`;
 
     setTimeout(() => {
-      alert("🎉 恭喜获得：\n" + prizes[index]);
-      localStorage.setItem("evo_" + debtor, prizes[index]);
+      showPrizeModal(prizes[stopIndex].text.replace("\n", " "));
+      window.usedDebtors[debtor] = true;
       spinning = false;
-    }, 4200);
+      spinBtn.disabled = false;
+    }, 4000);
+  }
+
+  function showPrizeModal(text) {
+    prizeText.innerText = text;
+    modal.classList.add("show");
+  }
+
+  function closeModal() {
+    modal.classList.remove("show");
+    wheel.style.transition = "none";
+    wheel.style.transform = "rotate(0deg)";
+    setTimeout(() => { wheel.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)"; }, 100);
   }
 </script>
 </body>
 </html>
-
