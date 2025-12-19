@@ -64,15 +64,21 @@ input{
 
 .pointer{
   position:absolute;
-  top:-18px;
+  top:-6px;                 /* ⬅️ 让箭头“压”进转盘一点 */
   left:50%;
   transform:translateX(-50%);
-  width:0;height:0;
-  border-left:18px solid transparent;
-  border-right:18px solid transparent;
-  border-bottom:36px solid #ff3b3b;
+  width:0;
+  height:0;
+
+  /* ⬇️ 三角形尖端向下 */
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-top:22px solid #ff3b3b;
+
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
   z-index:10;
 }
+
 
 #wheel-wrapper{
   width:300px;
@@ -266,3 +272,4 @@ drawWheel();
 
 </body>
 </html>
+
