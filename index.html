@@ -6,168 +6,128 @@
 <title>EVO Roda Bertuah</title>
 
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-
-  .card {
-    background: #ffffff;
-    width: 100%;
-    max-width: 420px;
-    border-radius: 28px;
-    padding: 32px 28px;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  }
-
-  h1 {
-    margin-bottom: 12px;
-    color: #333;
-    font-size: 24px;
-    font-weight: 700;
-  }
-
-  .badge {
-    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-    color: #fff;
-    display: inline-block;
-    padding: 8px 18px;
-    border-radius: 25px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .wheel-wrapper {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: 0 auto 28px;
-  }
-
-  .arrow {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 25px solid #ff4757;
-    z-index: 10;
-  }
-
-  .wheel {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 8px solid #333;
-    position: relative;
-    overflow: hidden;
-    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-    background: #333;
-  }
-
-  .segment {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-origin: 50% 50%;
-    clip-path: polygon(50% 50%, 100% 15%, 100% 85%);
-  }
-
-  .segment span {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 120px;
-    text-align: right;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 800;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-    padding-right: 10px;
-    line-height: 1.2;
-  }
-
-  .center {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background: #fff;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    z-index: 5;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  }
-
-  input {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    border: 2px solid #eee;
-    margin-bottom: 20px;
-    font-size: 16px;
-  }
-
-  button {
-    width: 100%;
-    padding: 16px;
-    border-radius: 14px;
-    border: none;
-    background: #764ba2;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  button:disabled {
-    background: #ccc;
-  }
-
-  .modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal.show {
-    display: flex;
-  }
-
-  .modal-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 20px;
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',Tahoma;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.card{
+  background:#fff;
+  max-width:420px;
+  width:100%;
+  border-radius:28px;
+  padding:32px 28px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+h1{margin-bottom:12px;font-size:24px}
+.badge{
+  background:linear-gradient(135deg,#ffd89b,#19547b);
+  color:#fff;
+  padding:8px 18px;
+  border-radius:25px;
+  display:inline-block;
+  margin-bottom:24px;
+  font-size:13px;
+  font-weight:600;
+}
+.wheel-wrapper{
+  position:relative;
+  width:300px;
+  height:300px;
+  margin:0 auto 28px;
+}
+.arrow{
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:15px solid transparent;
+  border-right:15px solid transparent;
+  border-top:25px solid #ff4757;
+  z-index:10;
+}
+.wheel{
+  width:100%;height:100%;
+  border-radius:50%;
+  border:8px solid #333;
+  overflow:hidden;
+  transition:transform 4s cubic-bezier(.17,.67,.12,.99);
+}
+.segment{
+  position:absolute;
+  width:100%;height:100%;
+  clip-path:polygon(50% 50%,100% 15%,100% 85%);
+}
+.segment span{
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  width:120px;
+  text-align:right;
+  color:#fff;
+  font-weight:800;
+  font-size:14px;
+  text-shadow:1px 1px 3px rgba(0,0,0,.8);
+}
+.center{
+  position:absolute;
+  width:60px;height:60px;
+  background:#fff;
+  border-radius:50%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:5;
+}
+input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:2px solid #eee;
+  margin-bottom:20px;
+  font-size:16px;
+}
+button{
+  width:100%;
+  padding:16px;
+  border-radius:14px;
+  border:none;
+  background:#764ba2;
+  color:#fff;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+}
+button:disabled{background:#ccc}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:100;
+  justify-content:center;
+  align-items:center;
+}
+.modal.show{display:flex}
+.modal-content{
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
+  width:80%;
+  max-width:300px;
+  text-align:center;
+}
 </style>
 </head>
 
@@ -201,78 +161,89 @@
 </div>
 
 <script>
-  const prizes = [
-    { text: "TR12 / CM 1 Paket", color: "#FFD93D" },
-    { text: "TR12 / CM 2 Paket", color: "#6BCB77" },
-    { text: "TR12 / CM 1 Paket", color: "#FF6B6B" },
-    { text: "TR12 / CM 3 Paket", color: "#4D96FF" },
-    { text: "TR12 / CM 1 Paket", color: "#A66CFF" }
-  ];
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycby3T3h_CRY5DKM7LpIQzWd9kL5lExcHXQrHeBaM6XU-bxKz5A5RszKvHC3uEFOPMNOS/exec";
 
-  const wheel = document.getElementById("wheel");
-  const spinBtn = document.getElementById("spinBtn");
-  const modal = document.getElementById("modal");
-  const prizeText = document.getElementById("prizeText");
+const prizes=[
+ {text:"TR12 / CM 1 Paket",color:"#FFD93D"},
+ {text:"TR12 / CM 2 Paket",color:"#6BCB77"},
+ {text:"TR12 / CM 1 Paket",color:"#FF6B6B"},
+ {text:"TR12 / CM 3 Paket",color:"#4D96FF"},
+ {text:"TR12 / CM 1 Paket",color:"#A66CFF"}
+];
 
-  const total = prizes.length;
-  const anglePer = 360 / total;
+const wheel=document.getElementById("wheel");
+const spinBtn=document.getElementById("spinBtn");
+const modal=document.getElementById("modal");
+const prizeText=document.getElementById("prizeText");
 
-  prizes.forEach((prize, i) => {
-    const seg = document.createElement("div");
-    seg.className = "segment";
-    seg.style.transform = `rotate(${i * anglePer}deg)`;
-    seg.style.background = prize.color;
+const total=prizes.length;
+const anglePer=360/total;
 
-    const span = document.createElement("span");
-    span.innerText = prize.text;
-    seg.appendChild(span);
+// build wheel
+prizes.forEach((p,i)=>{
+  const seg=document.createElement("div");
+  seg.className="segment";
+  seg.style.background=p.color;
+  seg.style.transform=`rotate(${i*anglePer}deg)`;
+  const span=document.createElement("span");
+  span.innerText=p.text;
+  seg.appendChild(span);
+  wheel.appendChild(seg);
+});
 
-    wheel.appendChild(seg);
-  });
+let spinning=false;
 
-  let spinning = false;
-  const usedDebtors = {};
+async function spin(){
+  if(spinning) return;
 
-  function spin() {
-    if (spinning) return;
+  const debtor=document.getElementById("debtor").value.trim();
+  if(!debtor){alert("Sila masukkan Kod Debtor");return;}
 
-    const debtor = document.getElementById("debtor").value.trim();
-    if (!debtor) {
-      alert("Sila masukkan Kod Debtor");
-      return;
-    }
+  spinBtn.disabled=true;
+  spinning=true;
 
-    if (usedDebtors[debtor]) {
-      alert("Debtor ini sudah mengambil bahagian");
-      return;
-    }
+  // 先 check Google Sheet 是否已存在
+  const check=await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
+    .then(r=>r.json())
+    .catch(()=>({exists:false}));
 
-    spinning = true;
-    spinBtn.disabled = true;
-
-    const index = Math.floor(Math.random() * total);
-
-    // 🎯 关键修正：对齐 12 点箭头
-    const targetAngle =
-      index * anglePer + anglePer / 2;
-
-    const finalRotation =
-      360 * 5 - targetAngle - 90;
-
-    wheel.style.transform = `rotate(${finalRotation}deg)`;
-
-    setTimeout(() => {
-      prizeText.innerText = prizes[index].text;
-      modal.classList.add("show");
-      usedDebtors[debtor] = true;
-      spinning = false;
-      spinBtn.disabled = false;
-    }, 4200);
+  if(check.exists){
+    alert("Debtor ini sudah pernah bermain");
+    spinning=false;
+    spinBtn.disabled=false;
+    return;
   }
 
-  function closeModal() {
-    modal.classList.remove("show");
-  }
+  const index=Math.floor(Math.random()*total);
+
+  const targetAngle=index*anglePer+anglePer/2;
+  const finalRotation=360*5-targetAngle-90;
+  wheel.style.transform=`rotate(${finalRotation}deg)`;
+
+  setTimeout(async()=>{
+    const prize=prizes[index].text;
+    prizeText.innerText=prize;
+    modal.classList.add("show");
+
+    // 写入 Google Sheet
+    await fetch(SCRIPT_URL,{
+      method:"POST",
+      body:JSON.stringify({
+        debtor:debtor,
+        prize:prize,
+        page:location.href
+      })
+    });
+
+    spinning=false;
+    spinBtn.disabled=false;
+  },4200);
+}
+
+function closeModal(){
+  modal.classList.remove("show");
+}
 </script>
 
 </body>
