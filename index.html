@@ -36,7 +36,6 @@ h1{margin-bottom:12px;font-size:24px}
   font-size:13px;
   font-weight:600;
 }
-
 .wheel-wrapper{
   position:relative;
   width:300px;
@@ -54,15 +53,14 @@ h1{margin-bottom:12px;font-size:24px}
   border-top:28px solid #ff4757;
   z-index:10;
 }
-
 svg{
   width:100%;
   height:100%;
   border-radius:50%;
   border:8px solid #333;
   transition:transform 4.5s cubic-bezier(0.17,0.67,0.12,0.99);
+  will-change:transform;
 }
-
 .center{
   position:absolute;
   width:70px;
@@ -79,7 +77,6 @@ svg{
   z-index:5;
   box-shadow:0 4px 15px rgba(0,0,0,.2);
 }
-
 input,button{
   width:100%;
   padding:16px;
@@ -98,9 +95,7 @@ button{
   cursor:pointer;
 }
 button:disabled{background:#ccc}
-
 .note{margin-top:15px;font-size:12px;color:#666}
-
 .modal{
   display:none;
   position:fixed;
@@ -126,15 +121,14 @@ button:disabled{background:#ccc}
 <div class="card">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
   <div class="badge">Sila Masukkan Kod Debtor</div>
+  <label for="debtor" style="display:none">Kod Debtor</label>
   <input id="debtor" placeholder="Contoh: D12345" />
 
   <div class="wheel-wrapper">
     <div class="arrow"></div>
-
     <svg id="wheel" viewBox="0 0 300 300">
       <g transform="translate(150,150)"></g>
     </svg>
-
     <div class="center">🎁</div>
   </div>
 
@@ -151,40 +145,41 @@ button:disabled{background:#ccc}
 </div>
 
 <script>
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
 
-const prizes=[
-  {text:"TR12 / CM 1 Paket",color:"#FFD93D"},
-  {text:"TR12 / CM 2 Paket",color:"#6BCB77"},
-  {text:"TR12 / CM 1 Paket",color:"#FF6B6B"},
-  {text:"TR12 / CM 3 Paket",color:"#4D96FF"},
-  {text:"TR12 / CM 1 Paket",color:"#A66CFF"}
+// 奖品 + 权重（概率）
+const prizes = [
+  {text:"TR12 / CM 1 Paket",color:"#FFD93D",weight:40},
+  {text:"TR12 / CM 2 Paket",color:"#6BCB77",weight:25},
+  {text:"TR12 / CM 3 Paket",color:"#4D96FF",weight:20},
+  {text:"TR12 / CM 1 Paket",color:"#FF6B6B",weight:10},
+  {text:"TR12 / CM 1 Paket",color:"#A66CFF",weight:5}
 ];
 
-const svg=document.querySelector("#wheel g");
-const angle=360/prizes.length;
-const r=140;
+const svg = document.querySelector("#wheel g");
+const angle = 360 / prizes.length;
+const r = 140;
 
-prizes.forEach((p,i)=>{
-  const start=i*angle;
-  const end=start+angle;
-  const large=angle>180?1:0;
+// 绘制扇区
+function drawSegment(prize, index){
+  const start = index * angle;
+  const end = start + angle;
+  const large = angle > 180 ? 1 : 0;
 
-  const x1=r*Math.cos(Math.PI*start/180);
-  const y1=r*Math.sin(Math.PI*start/180);
-  const x2=r*Math.cos(Math.PI*end/180);
-  const y2=r*Math.sin(Math.PI*end/180);
+  const x1 = r * Math.cos(Math.PI * start / 180);
+  const y1 = r * Math.sin(Math.PI * start / 180);
+  const x2 = r * Math.cos(Math.PI * end / 180);
+  const y2 = r * Math.sin(Math.PI * end / 180);
 
-  const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+  const path = document.createElementNS("http://www.w3.org/2000/svg","path");
   path.setAttribute("d",`M0 0 L${x1} ${y1} A${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`);
-  path.setAttribute("fill",p.color);
+  path.setAttribute("fill",prize.color);
   svg.appendChild(path);
 
-  const text=document.createElementNS("http://www.w3.org/2000/svg","text");
-  const mid=start+angle/2;
-  const tx=(r-35)*Math.cos(Math.PI*mid/180);
-  const ty=(r-35)*Math.sin(Math.PI*mid/180);
+  const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+  const mid = start + angle/2;
+  const tx = (r-35) * Math.cos(Math.PI * mid/180);
+  const ty = (r-35) * Math.sin(Math.PI * mid/180);
   text.setAttribute("x",tx);
   text.setAttribute("y",ty);
   text.setAttribute("fill","#fff");
@@ -192,58 +187,65 @@ prizes.forEach((p,i)=>{
   text.setAttribute("font-weight","800");
   text.setAttribute("text-anchor","middle");
   text.setAttribute("dominant-baseline","middle");
-  text.textContent=p.text;
+  text.textContent = prize.text;
   svg.appendChild(text);
-});
+}
+prizes.forEach(drawSegment);
 
-let spinning=false;
+let spinning = false;
+
+// 加权随机选择奖品
+function weightedRandom(){
+  const total = prizes.reduce((sum,p)=>sum+p.weight,0);
+  let rand = Math.random() * total;
+  for(let i=0;i<prizes.length;i++){
+    rand -= prizes[i].weight;
+    if(rand <= 0) return i;
+  }
+  return prizes.length-1;
+}
+
+// 校验 Debtor 格式
+function validateDebtor(code){
+  return /^D\d{5}$/.test(code);
+}
 
 async function spin(){
-  if(spinning)return;
-  const debtor=document.getElementById("debtor").value.trim();
-  if(!debtor){alert("Sila masukkan Kod Debtor");return;}
-
-  spinning=true;
-  document.getElementById("spinBtn").disabled=true;
-
-  const check=await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
-    .then(r=>r.json()).catch(()=>({exists:false}));
-  if(check.exists){
-    alert("Debtor ini sudah pernah bermain");
-    reset();return;
+  if(spinning) return;
+  const debtor = document.getElementById("debtor").value.trim();
+  if(!validateDebtor(debtor)){
+    alert("Kod Debtor tidak sah. Format: D12345");
+    return;
   }
 
-  const index=Math.floor(Math.random()*prizes.length);
-  const target=index*angle+angle/2;
-  const rotation=360*6-target-90;
+  spinning = true;
+  document.getElementById("spinBtn").disabled = true;
 
-  document.getElementById("wheel").style.transform=`rotate(${rotation}deg)`;
+  try{
+    const check = await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`)
+      .then(r=>r.json());
+    if(check.exists){
+      alert("Debtor ini sudah pernah bermain");
+      reset();
+      return;
+    }
+  }catch(e){
+    alert("Ralat rangkaian. Sila cuba lagi.");
+    reset();
+    return;
+  }
+
+  const index = weightedRandom();
+  const target = index * angle + angle/2;
+  const rotation = 360*6 - target - 90;
+
+  document.getElementById("wheel").style.transform = `rotate(${rotation}deg)`;
 
   setTimeout(async()=>{
-    document.getElementById("prizeText").innerText=prizes[index].text;
+    document.getElementById("prizeText").innerText = prizes[index].text;
     document.getElementById("modal").classList.add("show");
 
-    await fetch(SCRIPT_URL,{
-      method:"POST",
-      body:JSON.stringify({
-        debtor,
-        prize:prizes[index].text,
-        page:location.href
-      })
-    });
-    reset();
-  },4800);
-}
+    try{
+      await fetch(SCRIPT_URL,{
 
-function reset(){
-  spinning=false;
-  document.getElementById("spinBtn").disabled=false;
-}
-function closeModal(){
-  document.getElementById("modal").classList.remove("show");
-  document.getElementById("debtor").value="";
-}
-document.getElementById("spinBtn").onclick=spin;
-</script>
-</body>
-</html>
+
