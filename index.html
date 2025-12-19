@@ -148,3 +148,133 @@
 
 <div class="card">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
+  <div class="badge">Sila Masukkan Kod Debtor</div>
+
+  <input id="debtor" placeholder="Contoh: D12345" />
+
+  <div class="wheel-wrapper">
+    <div class="arrow"></div>
+    <div id="wheel" class="wheel"></div>
+    <div class="center">🎁</div>
+  </div>
+
+  <button id="spinBtn" onclick="spin()">Putar Sekarang</button>
+
+  <div style="margin-top:15px;font-size:12px;color:#666">
+    *Setiap Debtor hanya 1 kali peluang
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h2 style="font-size: 28px;">Tahniah! 🎊</h2>
+    <p id="prizeText" style="margin:20px 0;font-size:20px;font-weight:bold;color:#764ba2"></p>
+    <button onclick="closeModal()">Tutup</button>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhNTgRhTZSe2LXrEl0EiPOeS79U_IC55ndcoSkTBSdkpVe3T4ys8e1babWWycqW9F2/exec";
+
+const prizes = [
+ { text: "TR12 / CM 1 Paket", color: "#FF6B6B" },
+ { text: "TR12 / CM 2 Paket", color: "#4D96FF" },
+ { text: "TR12 / CM 1 Paket", color: "#6BCB77" },
+ { text: "TR12 / CM 3 Paket", color: "#FFD93D" },
+ { text: "TR12 / CM 1 Paket", color: "#A66CFF" }
+];
+
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spinBtn");
+const modal = document.getElementById("modal");
+const prizeText = document.getElementById("prizeText");
+
+const total = prizes.length;
+const anglePer = 360 / total;
+let currentRotation = 0;
+let spinning = false;
+
+// Initialize Wheel Visuals
+function initWheel() {
+  // Create Conic Gradient Background
+  let gradientStr = prizes.map((p, i) => 
+    `${p.color} ${i * anglePer}deg ${(i + 1) * anglePer}deg`
+  ).join(",");
+  wheel.style.background = `conic-gradient(${gradientStr})`;
+
+  // Add Text Labels
+  prizes.forEach((p, i) => {
+    const label = document.createElement("div");
+    label.className = "segment-label";
+    // Rotate label to middle of segment
+    // We add -90 to start from top, then + (anglePer/2) to center in slice
+    const rotation = (i * anglePer) + (anglePer / 2) - 90;
+    label.style.transform = `rotate(${rotation}deg)`;
+    label.innerHTML = `<span>${p.text}</span>`;
+    wheel.appendChild(label);
+  });
+}
+
+initWheel();
+
+async function spin() {
+  if (spinning) return;
+
+  const debtor = document.getElementById("debtor").value.trim();
+  if (!debtor) { alert("Sila masukkan Kod Debtor"); return; }
+
+  spinBtn.disabled = true;
+  spinning = true;
+
+  /* // UNCOMMENT THIS for Google Sheets check
+  try {
+    const check = await fetch(`${SCRIPT_URL}?check=${encodeURIComponent(debtor)}`).then(r => r.json());
+    if (check.exists) {
+      alert("Debtor ini sudah pernah bermain");
+      spinning = false;
+      spinBtn.disabled = false;
+      return;
+    }
+  } catch (e) { console.log("Check failed, proceeding anyway"); }
+  */
+
+  const prizeIndex = Math.floor(Math.random() * total);
+  
+  // LOGIC: 
+  // 1. Calculate the center angle of the winning slice
+  // 2. We need that slice to end up at the TOP (270 degrees in CSS wheel)
+  // 3. Add 5-10 full spins for effect
+  const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360;
+  const sliceCenter = (prizeIndex * anglePer) + (anglePer / 2);
+  
+  // The wheel rotates clockwise. To bring a slice to the top (0 deg / arrow):
+  // rotation = total_spins - sliceCenter
+  currentRotation += extraSpins + (360 - (currentRotation % 360)) + (360 - sliceCenter);
+  
+  wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+  setTimeout(async () => {
+    const prize = prizes[prizeIndex].text;
+    prizeText.innerText = prize;
+    modal.classList.add("show");
+
+    /*
+    // UNCOMMENT THIS for Google Sheets save
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ debtor, prize, page: location.href })
+    });
+    */
+
+    spinning = false;
+    spinBtn.disabled = false;
+  }, 4000);
+}
+
+function closeModal() {
+  modal.classList.remove("show");
+}
+</script>
+
+</body>
+</html>
