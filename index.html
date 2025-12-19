@@ -30,7 +30,6 @@
     padding: 32px 28px;
     text-align: center;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.5s ease;
   }
 
   h1 {
@@ -51,7 +50,6 @@
     font-weight: 600;
   }
 
-  /* 轮盘容器 */
   .wheel-wrapper {
     position: relative;
     width: 300px;
@@ -83,27 +81,25 @@
     background: #333;
   }
 
-  /* 扇区样式优化 */
   .segment {
     position: absolute;
     width: 100%;
     height: 100%;
     transform-origin: 50% 50%;
-    clip-path: polygon(50% 50%, 100% 15%, 100% 85%); /* 修正扇区形状 */
+    clip-path: polygon(50% 50%, 100% 15%, 100% 85%);
   }
 
-  /* 字体样式优化 */
   .segment span {
     position: absolute;
-    right: 15px; /* 靠近外圈 */
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     width: 120px;
     text-align: right;
     color: #fff;
-    font-size: 14px; /* 加大字号 */
+    font-size: 14px;
     font-weight: 800;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 增加阴影，防止看不见白字 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     padding-right: 10px;
     line-height: 1.2;
   }
@@ -125,7 +121,6 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
   }
 
-  /* 输入框和按钮 */
   input {
     width: 100%;
     padding: 14px;
@@ -147,19 +142,24 @@
     cursor: pointer;
   }
 
-  button:disabled { background: #ccc; }
+  button:disabled {
+    background: #ccc;
+  }
 
-  /* 弹窗样式 */
   .modal {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.7);
     z-index: 100;
     justify-content: center;
     align-items: center;
   }
-  .modal.show { display: flex; }
+
+  .modal.show {
+    display: flex;
+  }
+
   .modal-content {
     background: #fff;
     padding: 30px;
@@ -172,11 +172,12 @@
 </head>
 
 <body>
+
 <div class="card">
   <h1>🎉 EVO Roda Bertuah 🎉</h1>
   <div class="badge">Sila Masukkan Kod Debtor</div>
 
-  <input id="debtor" placeholder="Contoh: D12345" maxlength="20" />
+  <input id="debtor" placeholder="Contoh: D12345" />
 
   <div class="wheel-wrapper">
     <div class="arrow"></div>
@@ -186,53 +187,51 @@
 
   <button id="spinBtn" onclick="spin()">Putar Sekarang</button>
 
-  <div class="note" style="margin-top: 15px; font-size: 12px; color: #666;">
+  <div style="margin-top:15px;font-size:12px;color:#666">
     *Setiap Debtor hanya 1 kali peluang
   </div>
 </div>
 
 <div id="modal" class="modal">
   <div class="modal-content">
-    <h2 id="modalTitle">Tahniah!</h2>
-    <p id="prizeText" style="margin: 20px 0; font-size: 18px; color: #764ba2; font-weight: bold;"></p>
-    <button onclick="closeModal()" style="padding: 10px;">OK</button>
+    <h2>Tahniah 🎉</h2>
+    <p id="prizeText" style="margin:20px 0;font-size:18px;font-weight:bold;color:#764ba2"></p>
+    <button onclick="closeModal()">OK</button>
   </div>
 </div>
 
 <script>
   const prizes = [
-    { text: "TR12 / CM\n1 Paket", color: "#FFD93D" },
-    { text: "TR12 / CM\n2 Paket", color: "#6BCB77" },
-    { text: "TR12 / CM\n1 Paket", color: "#FF6B6B" },
-    { text: "TR12 / CM\n3 Paket", color: "#4D96FF" },
-    { text: "TR12 / CM\n1 Paket", color: "#A66CFF" }
+    { text: "TR12 / CM 1 Paket", color: "#FFD93D" },
+    { text: "TR12 / CM 2 Paket", color: "#6BCB77" },
+    { text: "TR12 / CM 1 Paket", color: "#FF6B6B" },
+    { text: "TR12 / CM 3 Paket", color: "#4D96FF" },
+    { text: "TR12 / CM 1 Paket", color: "#A66CFF" }
   ];
 
   const wheel = document.getElementById("wheel");
   const spinBtn = document.getElementById("spinBtn");
   const modal = document.getElementById("modal");
   const prizeText = document.getElementById("prizeText");
-  
-  const totalPrizes = prizes.length;
-  const anglePer = 360 / totalPrizes;
 
-  // 初始化轮盘扇区
+  const total = prizes.length;
+  const anglePer = 360 / total;
+
   prizes.forEach((prize, i) => {
     const seg = document.createElement("div");
     seg.className = "segment";
-    // 旋转每个扇区
     seg.style.transform = `rotate(${i * anglePer}deg)`;
     seg.style.background = prize.color;
 
     const span = document.createElement("span");
     span.innerText = prize.text;
-    
     seg.appendChild(span);
+
     wheel.appendChild(seg);
   });
 
   let spinning = false;
-  window.usedDebtors = {};
+  const usedDebtors = {};
 
   function spin() {
     if (spinning) return;
@@ -243,43 +242,38 @@
       return;
     }
 
-    if (window.usedDebtors[debtor]) {
-      alert("Debtor ini sudah mengambil bahagian!");
+    if (usedDebtors[debtor]) {
+      alert("Debtor ini sudah mengambil bahagian");
       return;
     }
 
     spinning = true;
     spinBtn.disabled = true;
-    
-    // 随机一个结果 (0 到 totalPrizes-1)
-    const stopIndex = Math.floor(Math.random() * totalPrizes);
-    
-    // 旋转逻辑：圈数 + 偏移量
-    // 因为 CSS rotate(0) 指向的是 3 点钟方向，我们需要计算让目标停在顶部 12 点钟（即旋转 -90度 偏移）
-    const extraDegree = 360 * 5; // 转5圈
-    const targetDegree = extraDegree + (360 - (stopIndex * anglePer));
-    
-    wheel.style.transform = `rotate(${targetDegree}deg)`;
+
+    const index = Math.floor(Math.random() * total);
+
+    // 🎯 关键修正：对齐 12 点箭头
+    const targetAngle =
+      index * anglePer + anglePer / 2;
+
+    const finalRotation =
+      360 * 5 - targetAngle - 90;
+
+    wheel.style.transform = `rotate(${finalRotation}deg)`;
 
     setTimeout(() => {
-      showPrizeModal(prizes[stopIndex].text.replace("\n", " "));
-      window.usedDebtors[debtor] = true;
+      prizeText.innerText = prizes[index].text;
+      modal.classList.add("show");
+      usedDebtors[debtor] = true;
       spinning = false;
       spinBtn.disabled = false;
-    }, 4000);
-  }
-
-  function showPrizeModal(text) {
-    prizeText.innerText = text;
-    modal.classList.add("show");
+    }, 4200);
   }
 
   function closeModal() {
     modal.classList.remove("show");
-    wheel.style.transition = "none";
-    wheel.style.transform = "rotate(0deg)";
-    setTimeout(() => { wheel.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)"; }, 100);
   }
 </script>
+
 </body>
 </html>
