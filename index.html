@@ -64,18 +64,18 @@ input{
 
 .pointer{
   position:absolute;
-  top:-6px;                 /* ⬅️ 让箭头“压”进转盘一点 */
+  top:-14px;                 /* ⬅️ 让箭头“压”进转盘一点 */
   left:50%;
   transform:translateX(-50%);
   width:0;
   height:0;
 
   /* ⬇️ 三角形尖端向下 */
-  border-left:14px solid transparent;
-  border-right:14px solid transparent;
-  border-top:22px solid #ff3b3b;
+  border-left:16px solid transparent;
+  border-right:16px solid transparent;
+  border-top:28px solid #ff3b3b;
 
-  filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
+  filter:drop-shadow(0 6px 8px rgba(0,0,0,.45));
   z-index:10;
 }
 
@@ -246,7 +246,7 @@ spinBtn.onclick = ()=>{
   localStorage.setItem(key,"played");
 
   setTimeout(()=>{
-    fetch("https://script.google.com/macros/s/AKfycbwQf85kTjIIIG36WAFY-sYZJFZK3ZTFzTCBVX03_WZ5weeBtaFfUSJX6OKH6i2SNAXJ/exec",{
+    fetch("https://script.google.com/macros/s/AKfycbxNipcwd0yldTrsUrcBhnUd87mAIKDa9soDl-uOTLCs2ZbeqI7E_43gyBfWBIjYiHo/exec",{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body:JSON.stringify({
@@ -272,5 +272,6 @@ drawWheel();
 
 </body>
 </html>
+
 
 
