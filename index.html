@@ -161,19 +161,23 @@ button:disabled{
 </div>
 
 <form
-  id="gasForm"
-  action="https://script.google.com/macros/s/AKfycbw4doyNjutYdVPhyRrRnNxhY58zCxs8I_V6K7xzF4NKocqaLF9jOXIFWmc7WnUboO3Q/exec"
-  method="POST"
-  target="hiddenFrame"
->
-  <input type="hidden" name="debtor">
-  <input type="hidden" name="reward">
-  <input type="hidden" name="source" value="EVO_WHEEL_TR12_CM">
-</form>
-
-<iframe name="hiddenFrame" style="display:none;"></iframe>
-
+    id="gasForm"
+    action="https://script.google.com/macros/s/AKfycbw4doyNjutYdVPhyRrRnNxhY58zCxs8I_V6K7xzF4NKocqaLF9jOXIFWmc7WnUboO3Q/exec"
+    method="POST"
+    target="hiddenFrame"
+  >
+    <input type="hidden" name="debtor">
+    <input type="hidden" name="reward">
+    <input type="hidden" name="source" value="EVO_WHEEL_TR12_CM">
+  </form>
   
+<button
+  style="display:block;margin:20px auto;padding:10px 20px;"
+  onclick="document.getElementById('gasForm').submit()"
+>
+  手动送出测试
+</button>
+
 <script>
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
@@ -285,6 +289,7 @@ drawWheel();
 
 </body>
 </html>
+
 
 
 
