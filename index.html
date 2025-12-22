@@ -245,26 +245,36 @@ spinBtn.onclick = ()=>{
   spinBtn.textContent = "Memutar...";
   localStorage.setItem(key,"played");
 
-  setTimeout(()=>{
-    fetch("https://script.google.com/macros/s/AKfycbxqL4uX2NFBhNiIHC62a2NZ61ZRrRk7rtTO4ZcruqN_-D9doRjhKEhQtKA67bTpqsXd/exec",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
-        debtor,
-        reward:result,
-        source:"EVO_WHEEL_TR12_CM"
-      })
-    });
+setTimeout(() => {
 
-    alert(
-      "🎉 Tahniah!\n\n"+
-      "Kod Debtor: "+debtor+
-      "\n\nHadiah Anda:\n"+result+
-      "\n\nHadiah akan diberi bersama pesanan seterusnya."
-    );
+  const payload = {
+    debtor: debtor,
+    reward: result,
+    source: "EVO_WHEEL_TR12_CM"
+  };
 
-    spinBtn.textContent="Sudah Menyertai";
-  },4200);
+  fetch("https://script.google.com/macros/s/AKfycbw4doyNjutYdVPhyRrRnNxhY58zCxs8I_V6K7xzF4NKocqaLF9jOXIFWmc7WnUboO3Q/exec", {
+    method: "POST",
+    mode: "no-cors",   // ⭐ 一定要有
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: Object.keys(payload)
+      .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(payload[k]))
+      .join("&")
+  });
+
+  alert(
+    "🎉 Tahniah!\n\n" +
+    "Kod Debtor: " + debtor +
+    "\n\nHadiah Anda:\n" + result +
+    "\n\nHadiah akan diberi bersama pesanan seterusnya."
+  );
+
+  spinBtn.textContent = "Sudah Menyertai";
+
+}, 4200);
+
 };
 
 drawWheel();
@@ -272,6 +282,7 @@ drawWheel();
 
 </body>
 </html>
+
 
 
 
