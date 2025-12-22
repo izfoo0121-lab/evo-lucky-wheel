@@ -160,6 +160,20 @@ button:disabled{
   </div>
 </div>
 
+<form
+  id="gasForm"
+  action="https://script.google.com/macros/s/AKfycbw4doyNjutYdVPhyRrRnNxhY58zCxs8I_V6K7xzF4NKocqaLF9jOXIFWmc7WnUboO3Q/exec"
+  method="POST"
+  target="hiddenFrame"
+>
+  <input type="hidden" name="debtor">
+  <input type="hidden" name="reward">
+  <input type="hidden" name="source" value="EVO_WHEEL_TR12_CM">
+</form>
+
+<iframe name="hiddenFrame" style="display:none;"></iframe>
+
+  
 <script>
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
@@ -247,22 +261,11 @@ spinBtn.onclick = ()=>{
 
 setTimeout(() => {
 
-  const payload = {
-    debtor: debtor,
-    reward: result,
-    source: "EVO_WHEEL_TR12_CM"
-  };
+  const form = document.getElementById("gasForm");
+  form.debtor.value = debtor;
+  form.reward.value = result;
 
-  fetch("https://script.google.com/macros/s/AKfycbw4doyNjutYdVPhyRrRnNxhY58zCxs8I_V6K7xzF4NKocqaLF9jOXIFWmc7WnUboO3Q/exec", {
-    method: "POST",
-    mode: "no-cors",   // ⭐ 一定要有
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: Object.keys(payload)
-      .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(payload[k]))
-      .join("&")
-  });
+  form.submit();
 
   alert(
     "🎉 Tahniah!\n\n" +
@@ -282,6 +285,7 @@ drawWheel();
 
 </body>
 </html>
+
 
 
 
