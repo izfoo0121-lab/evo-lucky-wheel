@@ -170,7 +170,16 @@ button:disabled{
     <input type="hidden" name="reward">
     <input type="hidden" name="source" value="EVO_WHEEL_TR12_CM">
   </form>
-  <iframe name="hiddenFrame"></iframe>
+<iframe
+  name="hiddenFrame"
+  style="
+    display:none;
+    width:0;
+    height:0;
+    border:0;
+  "
+></iframe>
+
 
 <script>
 const canvas = document.getElementById("wheel");
@@ -286,6 +295,7 @@ drawWheel();
 
 </body>
 </html>
+
 
 
 
