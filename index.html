@@ -251,26 +251,27 @@ spinBtn.onclick = (e) => {
   e.preventDefault();   // ⭐ 关键！阻止浏览器默认行为
   e.stopPropagation();
 
-  const debtor = debtorInput.value.trim();
-  if (!debtor) {
-    alert("请输入 Debtor Code");
-    return;
-  }
+const debtor = debtorInput.value.trim();
+if (!debtor) {
+  alert("请输入 Debtor Code");
+  return;
+}
 
-  const key = "EVO_SPIN_" + debtor + "_" + invoice;
-  if (localStorage.getItem(key)) {
-    alert("Debtor 已参与过 🙏");
-    return;
-  }
-  const invoice = invoiceInput.value.trim().toUpperCase();
+const invoice = invoiceInput.value.trim().toUpperCase();
 
-  // Invoice 格式：IV + 5 个数字
-  const invoiceRegex = /^IV\d{5}$/;
+// Invoice 格式：IV + 5 个数字
+const invoiceRegex = /^IV\d{5}$/;
+if (!invoiceRegex.test(invoice)) {
+  alert("Invoice 格式不正确。\n正确格式：IV12345");
+  return;
+}
 
-  if (!invoiceRegex.test(invoice)) {
-    alert("Invoice 格式不正确。\n正确格式：IV12345");
-    return;
-  }
+// ⭐ 先有 invoice，才能拿来当 key
+const key = "EVO_SPIN_" + debtor + "_" + invoice;
+if (localStorage.getItem(key)) {
+  alert("Invoice 已使用过 🙏");
+  return;
+}
   
   const result = weightedRandom();
   const index = rewards.indexOf(result);
@@ -308,6 +309,7 @@ drawWheel();
 
 </body>
 </html>
+
 
 
 
