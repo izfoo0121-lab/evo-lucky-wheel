@@ -141,6 +141,7 @@ button:disabled{
   <div class="subtitle">Kedai Baharu · Dijamin ≥ 1 Paket TR12 / CM</div>
 
   <input id="debtorCode" placeholder="Masukkan Kod Debtor" />
+  <input id="invoiceNo" placeholder="Masukkan Invoice No (IV12345)" />
 
   <div id="wheel-container">
     <div class="pointer"></div>
@@ -167,6 +168,7 @@ button:disabled{
     target="hiddenFrame"
   >
     <input type="hidden" name="debtor">
+    <input type="hidden" name="invoice">
     <input type="hidden" name="reward">
     <input type="hidden" name="source" value="EVO_WHEEL_TR12_CM">
   </form>
@@ -187,7 +189,8 @@ const ctx = canvas.getContext("2d");
 const wheelWrapper = document.getElementById("wheel-wrapper");
 const spinBtn = document.getElementById("spinBtn");
 const debtorInput = document.getElementById("debtorCode");
-
+const invoiceInput = document.getElementById("invoiceNo");
+  
 const rewards = [
   "TR12 / CM - 1 paket",
   "TR12 / CM - 2 paket",
@@ -254,12 +257,21 @@ spinBtn.onclick = (e) => {
     return;
   }
 
-  const key = "EVO_SPIN_" + debtor;
+  const key = "EVO_SPIN_" + debtor + "_" + invoice;
   if (localStorage.getItem(key)) {
     alert("Debtor 已参与过 🙏");
     return;
   }
+  const invoice = invoiceInput.value.trim().toUpperCase();
 
+  // Invoice 格式：IV + 5 个数字
+  const invoiceRegex = /^IV\d{5}$/;
+
+  if (!invoiceRegex.test(invoice)) {
+    alert("Invoice 格式不正确。\n正确格式：IV12345");
+    return;
+  }
+  
   const result = weightedRandom();
   const index = rewards.indexOf(result);
   const arc = 360 / rewards.length;
@@ -295,6 +307,7 @@ drawWheel();
 
 </body>
 </html>
+
 
 
 
